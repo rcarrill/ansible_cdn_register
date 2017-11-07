@@ -11,4 +11,4 @@ Requisitos:
   
 Ejecución:
 
-  # ansible-playbook main.yml
+  $ ansible-playbook main.yml
