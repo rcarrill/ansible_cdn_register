@@ -1,13 +1,28 @@
 ---
-- name: Registra el equipo
-  command: subscription-manager register --username "{{ rh_username }}" --password "{{ rh_password }}" --force
+- hosts: somegroup
+  remote_user: someuser
+  tasks:
 
-- name: Agrega el pool
-  command: subscription-manager attach --pool="{{ rh_poolid }}"
-  register: register_result
+    - name: Des-registrando Sistema en Portal de Red Hat
+      command: subscription-manager unregister
+      register: rhsm-unregister_output
+ 
+    - name: Limpiando datos corruptos 
+      command: subscription-manager clean
+      register: rhsm-clean_output
 
-- name: Deshabilita todos los repos
-  command: subscription-manager repos --disable "*"
+    - name: Registrando Sistema en Portal de Red Hat
+      command: subscription-manager register --username someusername --password somepassword
+      register: rhsm-register_output
 
-- name: Habilita repos
-  command: subscription-manager repos --enable "{{ repos }}"
+    - name: Agregando pool ID
+      command: subscription-manager attach --pool somepoolid
+      register: rhsm-attach-pool_output
+
+    - name: Deshabilitando repos
+      command: subscription-manager repos --disable=*
+      register: disable_output
+
+    - name: Habilitando repo rhel-7-server-rpms
+      command: subscription-manager repos --enable rhel-7-server-rpms
+      register: enable_output
