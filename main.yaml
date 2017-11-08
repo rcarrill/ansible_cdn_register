@@ -10,7 +10,11 @@
     - name: Limpiando datos corruptos 
       command: subscription-manager clean
       register: rhsm-clean_output
-
+      
+    - name: Eliminar todas las suscripciones del sistema
+      command: subscription-manager remove --all
+      register: rhsm-remove-all_output
+      
     - name: Registrando Sistema en Portal de Red Hat
       command: subscription-manager register --username someusername --password somepassword
       register: rhsm-register_output
